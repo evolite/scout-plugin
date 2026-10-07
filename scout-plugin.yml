@@ -1,0 +1,14 @@
+name: Scout-Plugin
+description: Links from Stash performers and studios to the matching page in Stash Scout.
+version: 0.1.0
+url: https://codeberg.org/surging9143/scout-plugin
+settings:
+  scoutUrl:
+    displayName: Stash Scout URL
+    description: Base URL of your Stash Scout instance, e.g. http://localhost:8787
+    type: STRING
+ui:
+  javascript:
+    - scout-plugin.js
+  css:
+    - styles.css
