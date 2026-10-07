@@ -1,0 +1,4 @@
+/* The built-in Stash IDs list has a bottom margin; drop it when our row follows. */
+.detail-item.stash_ids:has(+ .scout_link) ul {
+  margin-bottom: 0;
+}

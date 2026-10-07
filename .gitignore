@@ -1,5 +1,4 @@
 node_modules
 dist
-*.js
-!rollup.config.mjs
-styles.css
+/scout-plugin.js
+/styles.css
