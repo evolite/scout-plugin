@@ -1,0 +1,12 @@
+id: scout-plugin
+name: Scout-Plugin
+metadata:
+  description: Links from Stash performers and studios to Stash Scout
+version: 0.1.0
+date: "2026-10-07 00:00:00"
+requires: []
+source_repository: https://surging9143.codeberg.page/index.yml
+files:
+- scout-plugin.yml
+- scout-plugin.js
+- styles.css

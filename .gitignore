@@ -1,4 +1,3 @@
 node_modules
-dist
-/scout-plugin.js
-/styles.css
+/scout-plugin/scout-plugin.js
+/scout-plugin/styles.css

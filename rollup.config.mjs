@@ -23,7 +23,7 @@ const banner = `window.require = function(name) {
 };`;
 
 // STASH_PLUGIN_DEST=. builds straight into the (symlinked) plugin dir.
-const dest = process.env.STASH_PLUGIN_DEST || "dist";
+const dest = process.env.STASH_PLUGIN_DEST || "scout-plugin";
 
 export default {
   input: "src/index.tsx",
