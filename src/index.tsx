@@ -34,7 +34,8 @@ const refresh = (): Promise<void> =>
 
 type StashId = { endpoint: string; stash_id: string };
 
-const ScoutLink = ({
+// Mirrors Stash's own "Stash IDs" row (detail-item + stash-id-pill) so it looks built in.
+const ScoutRow = ({
   kind,
   stashIds,
 }: {
@@ -48,26 +49,48 @@ const ScoutLink = ({
   const id = stashIds?.find((s) => /stashdb\.org/i.test(s.endpoint))?.stash_id;
   if (!scoutUrl || !id) return null;
   return (
-    <div className="scout-plugin-link">
-      <a
-        href={`${scoutUrl.replace(/\/+$/, "")}/${kind}/${id}`}
-        target="_blank"
-        rel="noopener noreferrer"
-      >
-        Open in Stash Scout
-      </a>
+    <div className="detail-item scout_link">
+      <span className="detail-item-title scout-link">Stash Scout:</span>
+      <span className="detail-item-value scout-link">
+        <ul className="pl-0">
+          <li className="row no-gutters">
+            <span className="stash-id-pill" data-endpoint="Scout">
+              <span>Scout</span>
+              <a
+                href={`${scoutUrl.replace(/\/+$/, "")}/${kind}/${id}`}
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                {id}
+              </a>
+            </span>
+          </li>
+        </ul>
+      </span>
     </div>
   );
 };
 
-// patch.after: (props, _ctx, result) — spread result to keep the original render.
+// patch.after: (props, _ctx, result). The panel's result is the wrapper element
+// holding the detail items, so clone it with our row as the last child (right
+// after "Stash IDs"). Fall back to a sibling if the shape is unexpected.
 const append = (name: string, kind: "performers" | "studios", prop: string) =>
-  PluginApi.patch.after(name, (props: any, _ctx: any, result: any) => [
-    <React.Fragment key="scout-plugin">
-      {result}
-      <ScoutLink kind={kind} stashIds={props[prop]?.stash_ids} />
-    </React.Fragment>,
-  ]);
+  PluginApi.patch.after(name, (props: any, _ctx: any, result: any) => {
+    const row = (
+      <ScoutRow key="scout-plugin" kind={kind} stashIds={props[prop]?.stash_ids} />
+    );
+    if (React.isValidElement(result)) {
+      return [
+        React.cloneElement(
+          result as React.ReactElement<any>,
+          undefined,
+          ...React.Children.toArray((result as any).props.children),
+          row
+        ),
+      ];
+    }
+    return [<React.Fragment key="scout-plugin">{result}{row}</React.Fragment>];
+  });
 
 append("PerformerDetailsPanel", "performers", "performer");
 append("StudioDetailsPanel", "studios", "studio");
