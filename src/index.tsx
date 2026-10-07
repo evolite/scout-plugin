@@ -13,9 +13,11 @@ const readCache = () => {
   }
 };
 
-// Module-level so every link shares one fetch; the server value wins over the cache.
+// Refetched on every link mount so settings changes apply without a page reload;
+// the server value wins over the cache.
 let scoutUrl = readCache();
-const ready: Promise<void> = fetch(`${PluginApi.baseURL ?? ""}/graphql`, {
+const refresh = (): Promise<void> =>
+  fetch(`${PluginApi.baseURL ?? ""}/graphql`, {
   method: "POST",
   credentials: "include",
   headers: { "Content-Type": "application/json" },
@@ -41,7 +43,7 @@ const ScoutLink = ({
 }) => {
   const [, rerender] = React.useReducer((n: number) => n + 1, 0);
   React.useEffect(() => {
-    ready.then(rerender);
+    refresh().then(rerender);
   }, []);
   const id = stashIds?.find((s) => /stashdb\.org/i.test(s.endpoint))?.stash_id;
   if (!scoutUrl || !id) return null;
