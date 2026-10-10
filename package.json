@@ -2,7 +2,7 @@
   "name": "scout-plugin",
   "version": "0.1.0",
   "description": "Links from Stash performers and studios to Stash Scout.",
-  "url": "https://codeberg.org/surging9143/scout-plugin",
+  "url": "https://github.com/evolite/scout-plugin",
   "scripts": {
     "build": "rollup -c",
     "watch": "rollup -c -w"
